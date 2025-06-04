@@ -11,7 +11,7 @@ public class CustomerController : ControllerBase
 
     public CustomerController()
     {
-        _service = new CustomerService(); // handmatig
+        _service = new CustomerService();
     }
 
     [HttpPost]

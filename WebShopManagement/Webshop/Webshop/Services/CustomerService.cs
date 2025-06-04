@@ -1,5 +1,5 @@
-using Webshop.Models;      // voor Customer model
-using Webshop.Repository; // voor CustomerRepository
+using Webshop.Models;      
+using Webshop.Repository; 
 
 
 public class CustomerService
@@ -8,7 +8,7 @@ public class CustomerService
 
     public CustomerService()
     {
-        _repository = new CustomerRepository(); // handmatig
+        _repository = new CustomerRepository();
     }
 
     public Customer Create(Customer customer)

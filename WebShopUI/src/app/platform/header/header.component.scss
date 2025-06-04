@@ -21,4 +21,7 @@ a {
     color: var(--color-text);
     cursor: pointer;
     padding: 10px;
+    align-items: center;
+    display: flex;
+    gap: 5px;
 }
