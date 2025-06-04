@@ -1,0 +1,14 @@
+<nav class="sidebar" [class.open]="isOpen">
+    
+  <h1>WebShopUI</h1>
+    <a routerLink="/">Dashboard</a>
+    <a routerLink="/category">Categorieën</a>
+    <a routerLink="/products">Producten</a>
+    <a routerLink="/clients">Klanten</a>
+
+    
+    <button class="toggle-button" (click)="toggleSidenav()">
+        <mat-icon>{{ isOpen ? 'arrow_back' : 'arrow_forward' }}</mat-icon>
+      </button>  
+</nav>
+  
