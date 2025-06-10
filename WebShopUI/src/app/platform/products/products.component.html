@@ -1,45 +1,36 @@
 <div class="products-container">
     <div class="products-header">
-     <h1>Producten</h1>
-     <p>Hieronder vind je een overzicht van alle producten.</p>
-     <button mat-flat-button color="primary" routerLink="/products/create"> Nieuw product</button>
+        <h1>Products</h1>
+        <button mat-raised-button color="primary" routerLink="/products/create">Nieuw Product</button>
     </div>
-
     <div class="products-list">
         <table class="table">
             <thead>
                 <tr>
                     <th>Naam</th>
                     <th>Prijs</th>
-                    <th>Categorie</th>
-                    <th>Voorraad</th>
+                    <th>Stock</th>
                     <th>Acties</th>
                 </tr>
             </thead>
             <tbody>
                 <tr *ngFor="let product of products">
                     <td>{{ product.name }}</td>
-                    <td>{{ product.price | currency }}</td>
-                    <td>{{ product.category.name }}</td>
+                    <td>{{ product.discountedPrice | currency }}</td>
                     <td>{{ product.stock }}</td>
                     <td>
-                        <button mat-icon-button  routerLink="/products/{{ product.id }}">
-                            <mat-icon class="MatIcon">edit</mat-icon>
+                        <button mat-icon-button color="primary" [routerLink]="['/products/edit', product.id]">
+                            <mat-icon>edit</mat-icon>
                         </button>
-                        <button mat-icon-button routerLink="/products/edit/{{ product.id }}">
-                            <mat-icon class="MatIcon">visibility</mat-icon>
+                        <button mat-icon-button color="primary" [routerLink]="['/products', product.id]">
+                            <mat-icon>visibility</mat-icon>
                         </button>
-                       
-                        <button mat-icon-button (click)="deleteProduct(product.id)">
-                            <mat-icon class="MatIcon">delete</mat-icon>
+                        <button mat-icon-button color="primary" (click)="deleteProduct(product.id)">
+                            <mat-icon>delete</mat-icon>
                         </button>
-                        
                     </td>
+                </tr>
             </tbody>
         </table>
     </div>
 </div>
-  
-
-
-<!--  in products ts, commen module importeren -->

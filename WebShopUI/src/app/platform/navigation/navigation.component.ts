@@ -4,6 +4,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { MatButtonModule } from '@angular/material/button';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-navigation',
@@ -14,6 +15,7 @@ import { MatButtonModule } from '@angular/material/button';
     MatIconModule,
     MatListModule,
     MatButtonModule, 
+    CommonModule,
   ],
   templateUrl: './navigation.component.html',
   styleUrls: ['./navigation.component.scss']

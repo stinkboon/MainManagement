@@ -10,15 +10,16 @@
     top: 0;
     left: 0;
     right: 0;
-    z-index: 1000; // zorg dat header boven alles zit
+    z-index: 1000; 
   }
   
   .platform-navigation {
     position: fixed;
-    top: 0px; // net onder de header
+    top: 0px;
     left: 0;
     width: 60px; 
-    height: calc(100% - 0px);
+    height: 100% ;
+    right: 0;
     background-color: #333;
     overflow: hidden;
     transition: width 0.3s ease;

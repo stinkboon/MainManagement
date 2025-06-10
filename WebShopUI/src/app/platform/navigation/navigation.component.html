@@ -1,14 +1,36 @@
 <nav class="sidebar" [class.open]="isOpen">
     
-  <h1>WebShopUI</h1>
-    <a routerLink="/">Dashboard</a>
-    <a routerLink="/category">Categorieën</a>
-    <a routerLink="/products">Producten</a>
-    <a routerLink="/clients">Klanten</a>
+  <h1 class="logo-container">
+    <img src="../../assets/Logo.png" alt="Logo" class="logo" />
+    <span *ngIf="isOpen">WebShop</span>
+  </h1>
+  
 
+  <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+    <mat-icon>dashboard</mat-icon>
+    <span *ngIf="isOpen">Dashboard</span>
+  </a>
+  
+  <a routerLink="/category" routerLinkActive="active">
+    <mat-icon>category</mat-icon>
+    <span *ngIf="isOpen">Categorieën</span>
+  </a>
+  
+  <a routerLink="/products" routerLinkActive="active">
+    <mat-icon>shopping_cart</mat-icon>
+    <span *ngIf="isOpen">Producten</span>
+  </a>
+  
+  <a routerLink="/clients" routerLinkActive="active">
+    <mat-icon>people</mat-icon>
+    <span *ngIf="isOpen">Klanten</span>
+  </a>
+  
     
     <button class="toggle-button" (click)="toggleSidenav()">
+      <span *ngIf="isOpen">Collapse</span>
         <mat-icon>{{ isOpen ? 'arrow_back' : 'arrow_forward' }}</mat-icon>
+        
       </button>  
 </nav>
   

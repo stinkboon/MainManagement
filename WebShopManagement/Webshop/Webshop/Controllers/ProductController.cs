@@ -11,13 +11,16 @@ namespace Webshop.Controllers;
 public class ProductController : ControllerBase
 {
     [HttpGet]
-    public ProductListViewModel Get()
+    public ProductViewModel[] GetAll()
     {
-        return MockProductList.ProductList;
+        var service = new ProductService();
+        var products = service.GetAll();
+        var viewModel = Mapper(products);
+        return viewModel;
     }
     
     [HttpGet("{id}")]
-    public ActionResult<ProductListViewModel>? Get(int id)
+    public ActionResult<ProductListViewModel>? GetProduct(int id)
     {
         var product = MockProductList.ProductList.Products.SingleOrDefault(x => x.Id == id);
 
@@ -47,6 +50,18 @@ public class ProductController : ControllerBase
         return Ok(viewmodel);
     }
 
+    private ProductViewModel[] Mapper(Product[] model)
+    {
+        List<ProductViewModel> products = new();
+        foreach (var product in model)
+        {
+            var mappedObject = Mapper(product);
+            products.Add(mappedObject);
+        }
+        return products.ToArray();
+    }
+    
+    
     private ProductViewModel Mapper(Product model)
     {
         return new ProductViewModel()
