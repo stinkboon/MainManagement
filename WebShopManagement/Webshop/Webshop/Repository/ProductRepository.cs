@@ -17,34 +17,34 @@ public class ProductRepository
         
         _context = new AppDbContext(optionsBuilder.Options);
     }
-    
-    public Product[] GetAll()
-    {
-        return _context.Products.ToArray();
-    }
 
-    public Product GetById(int id)
-    {
-        return _context.Products.Single(x => x.Id == id);
-    }
+public Product[] GetAll()
+{
+    return _context.Products.ToArray();
+}
 
-    public Product CreateProduct(Product product)
-    {
-        _context.Products.Add(product);
-        _context.SaveChanges();
-        return product;
-    }
+public Product GetById(int id)
+{
+    return _context.Products.Single(x => x.Id == id);
+}
 
-    public void UpdateProduct(Product product)
-    {
-        _context.Products.Update(product);
-        _context.SaveChanges();
-    }
+public Product CreateProduct(Product product)
+{
+    _context.Products.Add(product);
+    _context.SaveChanges();
+    return product;
+}
 
-    public void DeleteById(int id)
-    {
-        var productToBeDeleted = GetById(id);
-        _context.Products.Remove(productToBeDeleted);
-        _context.SaveChanges();
-    }
+public void UpdateProduct(Product product)
+{
+    _context.Products.Update(product);
+    _context.SaveChanges();
+}
+
+public void DeleteById(int id)
+{
+    var productToBeDeleted = GetById(id);
+    _context.Products.Remove(productToBeDeleted);
+    _context.SaveChanges();
+}
 }

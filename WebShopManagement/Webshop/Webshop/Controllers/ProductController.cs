@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
 using Webshop.DataContracts;
-using Webshop.MockData;
 using Webshop.Models;
 using Webshop.Services;
 
@@ -11,29 +10,27 @@ namespace Webshop.Controllers;
 public class ProductController : ControllerBase
 {
     [HttpGet]
-    public ProductViewModel[] GetAll()
+    public ActionResult<ProductViewModel[]> Get()
     {
         var service = new ProductService();
         var products = service.GetAll();
         var viewModel = Mapper(products);
+
         return viewModel;
     }
-    
-    [HttpGet("{id}")]
-    public ActionResult<ProductListViewModel>? GetProduct(int id)
-    {
-        var product = MockProductList.ProductList.Products.SingleOrDefault(x => x.Id == id);
 
-        if (id == 3) // = verboden toegang
-        {
-            return Unauthorized();
-        }
-        
+    [HttpGet("{id}")]
+    public ActionResult<ProductViewModel> Get(int id)
+    {
+        var service = new ProductService();
+
+        var product = service.GetProductById(id);
+
         if (product != null)
         {
             return Ok(product);
         }
-        
+
         return NotFound();
     }
 
@@ -43,11 +40,31 @@ public class ProductController : ControllerBase
         var service = new ProductService();
 
         var domainModel = Mapper(model);
-        var createdmodel = service.Create(domainModel);
-        var viewmodel = Mapper(createdmodel);
-            
-        
-        return Ok(viewmodel);
+        var createdModel = service.Create(domainModel);
+        var viewModel = Mapper(createdModel);
+
+        return Ok(viewModel);
+    }
+
+    [HttpPut]
+    public ActionResult Update([FromBody] UpdateProductModel model)
+    {
+        var service = new ProductService();
+
+        var domainModel = Mapper(model);
+        service.Update(domainModel);
+
+        return Ok();
+    }
+
+    [HttpDelete("{id}")]
+    public ActionResult Delete(int id)
+    {
+        var service = new ProductService();
+
+        service.Delete(id);
+
+        return Ok();
     }
 
     private ProductViewModel[] Mapper(Product[] model)
@@ -60,8 +77,7 @@ public class ProductController : ControllerBase
         }
         return products.ToArray();
     }
-    
-    
+
     private ProductViewModel Mapper(Product model)
     {
         return new ProductViewModel()
@@ -74,7 +90,8 @@ public class ProductController : ControllerBase
             DiscountPercentage = model.DiscountPercentage
         };
     }
-    private Product Mapper(CreateProductModel model)
+
+    private Product Mapper(CreateProductModel model) 
     {
         return new Product()
         {
@@ -85,8 +102,20 @@ public class ProductController : ControllerBase
             DiscountPercentage = model.DiscountPercentage
         };
     }
-}
 
+    private Product Mapper(UpdateProductModel model)
+    {
+        return new Product()
+        {
+            Id = model.Id,
+            Name = model.Name,
+            Description = model.Description,
+            Price = model.Price,
+            Stock = model.Stock,
+            DiscountPercentage = model.DiscountPercentage
+        };
+    }
+}
 
 
 

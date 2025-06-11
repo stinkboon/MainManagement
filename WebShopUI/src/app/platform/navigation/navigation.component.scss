@@ -2,15 +2,16 @@
 .sidebar {
     position: fixed;
     left: 0;
-    width: 60px;
-    height: calc(100% );
+    width: 65px;
+    height: 100%;
     background-color: #4c4c4c;
     transition: width 0.3s ease;
     overflow: hidden;
-    z-index: 1100;  
+    z-index: 1100;
+    box-shadow: #000000 0px 0px 5px 0px;
   
     &.open {
-      width: 250px;
+      width: 200px;
     }
   
     h1 {
@@ -40,6 +41,11 @@
       display: flex;
       align-items: center;
       gap: 10px;
+      width: 24px;
+    }
+
+    .a-open {
+      width: auto;
     }
 
   }
@@ -77,3 +83,5 @@ a {
   color: white;
   font-size: 1.2em;
 }
+
+
