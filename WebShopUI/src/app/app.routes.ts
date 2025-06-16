@@ -6,15 +6,15 @@ import { ProductUpdateComponent } from './platform/products/product-update/produ
 import { CategoryComponent } from './platform/category/category.component';
 import { ClientsComponent } from './platform/clients/clients.component';
 import { DashboardComponent } from './platform/dashboard/dashboard.component';  // adjust path if needed
+import { LoginComponent } from './authentication/login/login.component';
 
 export const routes: Routes = [
-  { path: '', redirectTo: 'dashboard', pathMatch: 'full' },  // default route
-  { path: 'dashboard', component: DashboardComponent },      // dashboard route
-  { path: 'products', component: ProductComponent },
-  { path: 'products/create', component: ProductCreateComponent },
-  { path: 'products/edit/:id', component: ProductUpdateComponent },
-  { path: 'products/:id', component: ProductViewComponent },
-  { path: 'category', component: CategoryComponent },
-  { path: 'clients', component: ClientsComponent },
-  { path: '**', redirectTo: 'dashboard' }  // wildcard route fallback
+  {path: 'login', component: LoginComponent},  // login route
+  { path: 'platform/dashboard', component: DashboardComponent },      // dashboard route
+  { path: 'platform/products', component: ProductComponent },
+  { path: 'platform/products/create', component: ProductCreateComponent },
+  { path: 'platform/products/edit/:id', component: ProductUpdateComponent },
+  { path: 'platform/products/:id', component: ProductViewComponent },
+  { path: 'platform/category', component: CategoryComponent },
+  { path: 'platform/clients', component: ClientsComponent },
 ];

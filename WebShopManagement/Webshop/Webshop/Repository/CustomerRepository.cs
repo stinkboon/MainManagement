@@ -9,27 +9,43 @@ namespace Webshop.Repository
 
         public CustomerRepository()
         {
-            var connectionString = "Host=localhost;Port=5432;Database=WebshopDatabase;Username=postgres;Password=Beenham01";
+            var connectionString =
+                "Host=localhost;Port=5432;Database=WebshopDatabase;Username=postgres;Password=Beenham01";
             var optionsBuilder = new DbContextOptionsBuilder<AppDbContext>();
             optionsBuilder.UseNpgsql(connectionString);
 
             _context = new AppDbContext(optionsBuilder.Options);
         }
 
-        public void AddCustomer(Customer customer)
+        public Customer[] GetAll()
+        {
+            return _context.Customers.ToArray();
+        }
+
+        public Customer GetById(int id)
+        {
+            return _context.Customers.Single(x => x.Id == id);
+        }
+
+        public Customer CreateCustomer(Customer customer)
         {
             _context.Customers.Add(customer);
             _context.SaveChanges();
+            return customer;
         }
 
-        public List<Customer> GetAllCustomers()
+        public void UpdateCustomer(Customer customer)
         {
-            return _context.Customers.ToList();
+            _context.Customers.Update(customer);
+            _context.SaveChanges();
         }
 
-        public Customer? GetCustomerById(int id)
+        public void DeleteById(int id)
         {
-            return _context.Customers.FirstOrDefault(c => c.Id == id);
+            var customerToBeDeleted = GetById(id);
+            _context.Customers.Remove(customerToBeDeleted);
+            _context.SaveChanges();
         }
     }
+
 }

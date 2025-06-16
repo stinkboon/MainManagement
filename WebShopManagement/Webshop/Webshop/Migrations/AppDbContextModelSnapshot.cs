@@ -33,6 +33,10 @@ namespace Webshop.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<string>("City")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("text");
@@ -46,6 +50,14 @@ namespace Webshop.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("PhoneNumber")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("State")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Zip")
                         .IsRequired()
                         .HasColumnType("text");
 

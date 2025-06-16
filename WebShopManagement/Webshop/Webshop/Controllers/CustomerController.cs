@@ -1,55 +1,129 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Webshop.Models;         
-using Webshop.DataContracts; 
+using Webshop.DataContracts;
+using Webshop.Models;
+using Webshop.Services;
 
+namespace Webshop.Controllers;
 
+[Authorize]
+[Route("api/[controller]")]
 [ApiController]
-[Route("[controller]")]
 public class CustomerController : ControllerBase
 {
-    private readonly CustomerService _service;
-
-    public CustomerController()
+    [HttpGet]
+    public ActionResult<CustomerViewModel[]> Get()
     {
-        _service = new CustomerService();
+        var service = new CustomerService();
+        var customers = service.GetAll();
+        var viewModel = Mapper(customers);
+
+        return viewModel;
+    }
+
+    [HttpGet("{id}")]
+    public ActionResult<CustomerViewModel> Get(int id)
+    {
+        var service = new CustomerService();
+
+        var product = service.GetCustomerById(id);
+
+        if (product != null)
+        {
+            return Ok(product);
+        }
+
+        return NotFound();
     }
 
     [HttpPost]
     public ActionResult<CustomerViewModel> Post([FromBody] CreateCustomerModel model)
     {
-        var domainModel = new Customer
+        var service = new CustomerService();
+
+        var domainModel = Mapper(model);
+        var createdModel = service.Create(domainModel);
+        var viewModel = Mapper(createdModel);
+
+        return Ok(viewModel);
+    }
+
+    [HttpPut]
+    public ActionResult Update([FromBody] UpdateCustomerModel model)
+    {
+        var service = new CustomerService();
+
+        var domainModel = Mapper(model);
+        service.Update(domainModel);
+
+        return Ok();
+    }
+
+    [HttpDelete("{id}")]
+    public ActionResult Delete(int id)
+    {
+        var service = new CustomerService();
+
+        service.Delete(id);
+
+        return Ok();
+    }
+
+    private CustomerViewModel[] Mapper(Customer[] model)
+    {
+        List<CustomerViewModel> customers = new();
+        foreach (var customer in model)
+        {
+            var mappedObject = Mapper(customer);
+            customers.Add(mappedObject);
+        }
+        return customers.ToArray();
+    }
+
+    private CustomerViewModel Mapper(Customer model)
+    {
+        return new CustomerViewModel()
+        {
+            Id = model.Id,
+            FirstName = model.FirstName,
+            LastName = model.LastName,
+            Email = model.Email,
+            PhoneNumber = model.PhoneNumber,
+            Address = model.Address,
+            City = model.City,
+            State = model.State,
+            Zip = model.Zip,
+        };
+    }
+
+    private Customer Mapper(CreateCustomerModel model)
+    {
+        return new Customer()
         {
             FirstName = model.FirstName,
             LastName = model.LastName,
             Email = model.Email,
             PhoneNumber = model.PhoneNumber,
-            Address = model.Address
+            Address = model.Address,
+            City = model.City,
+            State = model.State,
+            Zip = model.Zip,
         };
-
-        var createdModel = _service.Create(domainModel);
-
-        var viewModel = new CustomerViewModel
-        {
-            Id = createdModel.Id,
-            FullName = $"{createdModel.FirstName} {createdModel.LastName}",
-            Email = createdModel.Email
-        };
-
-        return Ok(viewModel);
     }
 
-    [HttpGet]
-    public ActionResult<List<CustomerViewModel>> GetAll()
+    private Customer Mapper(UpdateCustomerModel model)
     {
-        var customers = _service.GetAll();
-
-        var viewModels = customers.Select(c => new CustomerViewModel
+        return new Customer()
         {
-            Id = c.Id,
-            FullName = $"{c.FirstName} {c.LastName}",
-            Email = c.Email
-        }).ToList();
-
-        return Ok(viewModels);
+            Id = model.Id,
+            FirstName = model.FirstName,
+            LastName = model.LastName,
+            Email = model.Email,
+            PhoneNumber = model.PhoneNumber,
+            Address = model.Address,
+            City = model.City,
+            State = model.State,
+            Zip = model.Zip,
+        };
     }
 }

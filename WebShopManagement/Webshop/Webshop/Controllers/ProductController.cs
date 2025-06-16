@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Webshop.DataContracts;
 using Webshop.Models;
@@ -5,8 +6,9 @@ using Webshop.Services;
 
 namespace Webshop.Controllers;
 
+[Authorize]
+[Route("api/[controller]")]
 [ApiController]
-[Route("[controller]")]
 public class ProductController : ControllerBase
 {
     [HttpGet]
@@ -116,7 +118,3 @@ public class ProductController : ControllerBase
         };
     }
 }
-
-
-
-
