@@ -17,15 +17,12 @@ public class UserService : IUserService
     {
         var user = _repository.GetByEmail(email);
 
-        if (user != null)
+        if (user != null && user.Password == password)
         {
-            if(user.Password == password)
-            {
-                user.LastLoginDate = DateTime.UtcNow;
-                _repository.UpdateUser(user);
+            user.LastLoginDate = DateTime.UtcNow;
+            _repository.UpdateUser(user);
 
-                return user;
-            }
+            return user;
         }
         return null;
     }
