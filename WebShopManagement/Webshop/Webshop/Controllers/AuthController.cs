@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using Webshop.DataContracts;
+using Webshop.Interfaces.Services;
 
 namespace Webshop.Controllers;
 
@@ -13,12 +14,20 @@ namespace Webshop.Controllers;
 [ApiController]
 public class AuthController : ControllerBase
 {
+    private readonly IUserService _userService;
+    public AuthController(IUserService userService)
+    {
+        _userService = userService;
+    }
+
     [HttpPost("login")]
     public ActionResult<string> Login([FromBody] LoginDto model)
     {
-        if (model.UserName == "dani" && model.Password == "qwertY!")
+        var result = _userService.Login(model.UserName, model.Password);
+
+        if (result != null)
         {
-            var jwt = GetToken(model.UserName);
+            var jwt = GetToken(result.Email);
 
             return Ok(new
             {
@@ -29,15 +38,16 @@ public class AuthController : ControllerBase
         return Unauthorized();
     }
 
-    private JwtSecurityToken GetToken(string userName)
+    private JwtSecurityToken GetToken(string email)
     {
         var claims = new[]
         {
-            new Claim(ClaimTypes.Name, userName)
+            new Claim(ClaimTypes.Name, email)
         };
 
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("DitIsSuperSecretPlusZestienKarakters"));
         var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+
 
         var token = new JwtSecurityToken(
             issuer: "Webshop",
