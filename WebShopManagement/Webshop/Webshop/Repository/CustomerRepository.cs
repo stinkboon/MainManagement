@@ -1,22 +1,18 @@
-using Microsoft.EntityFrameworkCore;
-using Webshop.Models; // <- voor toegang tot AppDbContext en Customer
+using Webshop.Interfaces.Repository;
+using Webshop.Models;
 
 namespace Webshop.Repository
 {
-    public class CustomerRepository
+    public class CustomerRepository : ICustomerRepository
     {
         private readonly AppDbContext _context;
 
-        public CustomerRepository()
+        public CustomerRepository(AppDbContext context)
         {
-            var connectionString =
-                "Host=localhost;Port=5432;Database=WebshopDatabase;Username=postgres;Password=Beenham01";
-            var optionsBuilder = new DbContextOptionsBuilder<AppDbContext>();
-            optionsBuilder.UseNpgsql(connectionString);
-
-            _context = new AppDbContext(optionsBuilder.Options);
+            _context = context;
         }
-
+            
+            
         public Customer[] GetAll()
         {
             return _context.Customers.ToArray();

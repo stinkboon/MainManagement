@@ -1,21 +1,17 @@
 using Microsoft.EntityFrameworkCore;
+using Webshop.Interfaces.Repository;
 using Webshop.Models;
 
 namespace Webshop.Repository;
 
-public class ProductRepository
+public class ProductRepository : IProductRepository
 {
 
     private readonly AppDbContext _context;
 
-    public ProductRepository()
+    public ProductRepository(AppDbContext context)
     {
-        var connectionString = "Host=localhost;Port=5432;Database=WebshopDatabase;Username=postgres;Password=Beenham01";
-        
-        var optionsBuilder  = new DbContextOptionsBuilder<AppDbContext>();
-        optionsBuilder.UseNpgsql(connectionString);
-        
-        _context = new AppDbContext(optionsBuilder.Options);
+        _context = context;
     }
 
 public Product[] GetAll()

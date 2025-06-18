@@ -10,7 +10,7 @@ import { UpdateProductModel } from '../datacontracts/UpdateProductModel';
   providedIn: 'root',
 })
 export class ProductService{
-  private url = 'http://localhost:5103';
+  private url = 'http://localhost:5103/api/product';
   constructor(private http: HttpClient) { }
 
 public getAll(): Observable<ProductViewModel[]> {

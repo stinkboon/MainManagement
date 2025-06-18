@@ -1,7 +1,49 @@
-<p>Klantentabel aanmaken
-    customer crud
- token interceptor van git halen
- als je geen token heb, laadt naar login en registreren met ngIf
- 
+<div class="customer-container">
+    <div class="customer-header">
+        <h1>Clienten</h1>
+        <button mat-raised-button color="primary" routerLink="/platform/clients/create">Nieuwe client</button>
+    </div>
+    <div class="customer-list">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Email</th>
+                    <th>Phone number</th>
+                    <th>Address</th>
+                    <th>City</th>
+                    <th>State</th>
+                    <th>Zip Code</th>
+                    <th>Actions</th>
 
-</p>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let customer of customers">
+                    <td>{{ customer.FirstName }}</td>
+                    <td>{{ customer.LastName }}</td>
+                    <td>{{ customer.Email }}</td>
+                    <td>{{ customer.PhoneNumber }}</td>
+                    <td>{{ customer.Address }}</td>
+                    <td>{{ customer.City }}</td>
+                    <td>{{ customer.State }}</td>
+                    <td>{{ customer.ZipCode  }}</td>
+
+                    <td>
+                        <button mat-icon-button color="primary" [routerLink]="['/platform/clients/edit', customer.id]">
+                            <mat-icon>edit</mat-icon>
+                        </button>
+                        <button mat-icon-button color="primary" [routerLink]="['/platform/clients', customer.id]">
+                            <mat-icon>visibility</mat-icon>
+                        </button>
+                        <button mat-icon-button color="primary" (click)="deleteCustomer(customer.id)">
+                            <mat-icon>delete</mat-icon>
+                        </button>
+                    </td>
+                </tr>
+            </tbody>        
+        </table>
+    </div>
+</div>
+

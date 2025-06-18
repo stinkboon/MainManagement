@@ -1,41 +1,44 @@
+using Webshop.Interfaces.Repository;
+using Webshop.Interfaces.Services;
 using Webshop.Models;
 using Webshop.Repository;
 
 namespace Webshop.Services;
 
-public class CustomerService
+public class CustomerService : ICustomerService
 {
-    private readonly CustomerRepository repository;
-
-    public CustomerService()
+    private readonly ICustomerRepository _repository;
+    
+    public CustomerService(ICustomerRepository repository)
     {
-        repository = new CustomerRepository();
+        _repository = repository;
     }
+    
 
     public Customer[] GetAll()
     {
-        return repository.GetAll();
+        return _repository.GetAll();
     }
 
     public Customer GetCustomerById(int id)
     {
-        return repository.GetById(id);
+        return _repository.GetById(id);
     }
 
     public Customer Create(Customer customer)
     {
-        var createdCustomer = repository.CreateCustomer(customer);
+        var createdCustomer = _repository.CreateCustomer(customer);
         return createdCustomer;
     }
 
     public void Delete(int id)
     {
-        repository.DeleteById(id);
+        _repository.DeleteById(id);
     }
 
-    public void Update(Customer customer)
+    public void Update(Customer customer)   
     {
-        var dbModel = repository.GetById(customer.Id);
+        var dbModel = _repository.GetById(customer.Id);
 
         dbModel.FirstName = customer.FirstName;
         dbModel.LastName = customer.LastName;
@@ -47,6 +50,6 @@ public class CustomerService
         dbModel.Zip = customer.Zip;
         
 
-        repository.UpdateCustomer(dbModel);
+        _repository.UpdateCustomer(dbModel);
     }
 }

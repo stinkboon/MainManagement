@@ -1,41 +1,42 @@
+using Webshop.Interfaces.Repository;
+using Webshop.Interfaces.Services;
 using Webshop.Models;
-using Webshop.Repository;
 
 namespace Webshop.Services;
 
-public class ProductService
+public class ProductService : IProductService
 {
-    private readonly ProductRepository repository;
+    private readonly IProductRepository _repository;
 
-    public ProductService()
+    public ProductService (IProductRepository repository)
     {
-        repository = new ProductRepository();
+        _repository = repository;
     }
 
     public Product[] GetAll()
     {
-        return repository.GetAll();
+        return _repository.GetAll();
     }
 
     public Product GetProductById(int id)
     {
-        return repository.GetById(id);
+        return _repository.GetById(id);
     }
 
     public Product Create(Product product)
     {
-        var createdProduct = repository.CreateProduct(product);
+        var createdProduct = _repository.CreateProduct(product);
         return createdProduct;
     }
 
     public void Delete(int id)
     {
-        repository.DeleteById(id);
+        _repository.DeleteById(id);
     }
 
     public void Update(Product product)
     {
-        var dbModel = repository.GetById(product.Id);
+        var dbModel = _repository.GetById(product.Id);
 
         dbModel.Name = product.Name;
         dbModel.Description = product.Description;
@@ -43,6 +44,6 @@ public class ProductService
         dbModel.DiscountPercentage = product.DiscountPercentage;
         dbModel.Stock = product.Stock;
 
-        repository.UpdateProduct(dbModel);
+        _repository.UpdateProduct(dbModel);
     }
 }

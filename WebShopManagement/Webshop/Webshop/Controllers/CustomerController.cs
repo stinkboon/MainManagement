@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Webshop.DataContracts;
+using Webshop.Interfaces.Services;
 using Webshop.Models;
 using Webshop.Services;
 
@@ -11,11 +12,16 @@ namespace Webshop.Controllers;
 [ApiController]
 public class CustomerController : ControllerBase
 {
+    private readonly ICustomerService _customerService; 
+    
+    public CustomerController(ICustomerService customerService)
+    {
+        _customerService = customerService;
+    }
     [HttpGet]
     public ActionResult<CustomerViewModel[]> Get()
     {
-        var service = new CustomerService();
-        var customers = service.GetAll();
+        var customers = _customerService.GetAll();
         var viewModel = Mapper(customers);
 
         return viewModel;
@@ -24,9 +30,8 @@ public class CustomerController : ControllerBase
     [HttpGet("{id}")]
     public ActionResult<CustomerViewModel> Get(int id)
     {
-        var service = new CustomerService();
 
-        var product = service.GetCustomerById(id);
+        var product = _customerService.GetCustomerById(id);
 
         if (product != null)
         {
@@ -39,10 +44,9 @@ public class CustomerController : ControllerBase
     [HttpPost]
     public ActionResult<CustomerViewModel> Post([FromBody] CreateCustomerModel model)
     {
-        var service = new CustomerService();
 
         var domainModel = Mapper(model);
-        var createdModel = service.Create(domainModel);
+        var createdModel = _customerService.Create(domainModel);
         var viewModel = Mapper(createdModel);
 
         return Ok(viewModel);
@@ -51,10 +55,9 @@ public class CustomerController : ControllerBase
     [HttpPut]
     public ActionResult Update([FromBody] UpdateCustomerModel model)
     {
-        var service = new CustomerService();
 
         var domainModel = Mapper(model);
-        service.Update(domainModel);
+        _customerService.Update(domainModel);
 
         return Ok();
     }
@@ -62,9 +65,8 @@ public class CustomerController : ControllerBase
     [HttpDelete("{id}")]
     public ActionResult Delete(int id)
     {
-        var service = new CustomerService();
 
-        service.Delete(id);
+        _customerService.Delete(id);
 
         return Ok();
     }
