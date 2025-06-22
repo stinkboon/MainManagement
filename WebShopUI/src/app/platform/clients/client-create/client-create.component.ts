@@ -25,7 +25,7 @@ import { CustomerService } from '../../../core/services/customer.service';
   templateUrl: './client-create.component.html',
   styleUrls: ['./client-create.component.scss']
 })
-export default class CustomerCreateComponent {
+export  class CustomerCreateComponent {
   customerForm: FormGroup;
 
   constructor(
@@ -34,10 +34,11 @@ export default class CustomerCreateComponent {
     private router: Router
   ) {
     this.customerForm = this.fb.group({
+      
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
-      phone: ['', Validators.required],
+      phoneNumber: ['', Validators.required],
       address: ['', Validators.required],
       city: ['', Validators.required],
       state: ['', Validators.required],

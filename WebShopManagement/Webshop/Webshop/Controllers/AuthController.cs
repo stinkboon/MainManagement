@@ -23,7 +23,7 @@ public class AuthController : ControllerBase
     [HttpPost("login")]
     public ActionResult<string> Login([FromBody] LoginDto model)
     {
-        var result = _userService.Login(model.UserName, model.Password);
+        var result = _userService.Login(model.Email, model.Password);
 
         if (result != null)
         {
@@ -45,7 +45,8 @@ public class AuthController : ControllerBase
             new Claim(ClaimTypes.Name, email)
         };
 
-        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("DitIsSuperSecretPlusZestienKarakters"));
+        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("ditissupersecretzestienkarakters"));
+
         var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
 
@@ -58,4 +59,36 @@ public class AuthController : ControllerBase
 
         return token;
     }
+    
+    [HttpPost("register")]
+    public IActionResult Register([FromBody] RegisterDto dto)
+    {
+        try
+        {
+            var user = _userService.Register(dto.Email, dto.Password);
+            return Ok(new 
+            {
+                message = "Registratie gelukt",
+                email = user.Email 
+            });
+
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new { message = ex.Message });
+        }
+    }
+    
+    [HttpPost("forgot-password")]
+    public IActionResult ForgotPassword([FromBody] ForgotPasswordDto dto)
+    {
+        var user = _userService.GetByEmail(dto.Email);
+
+        if (user == null)
+            return NotFound(new { message = "Gebruiker niet gevonden" });
+
+        return Ok(new { message = "Reset link is verstuurd (niet echt)" });
+    }
+
+
 };

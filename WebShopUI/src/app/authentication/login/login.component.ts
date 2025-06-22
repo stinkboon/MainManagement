@@ -1,16 +1,16 @@
 import { Component } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
-import { loginDto } from '../../core/datacontracts/loginDto';
 import { AuthService } from '../../core/services/auth.service';
 import { CommonModule } from '@angular/common';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
-
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-login',
+  standalone: true,
   imports: [
     CommonModule,
     ReactiveFormsModule,
@@ -19,37 +19,59 @@ import { MatButtonModule } from '@angular/material/button';
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
+    MatProgressSpinnerModule
   ],
   templateUrl: './login.component.html',
-  styleUrl: './login.component.scss'
+  styleUrls: ['./login.component.scss']
 })
 export class LoginComponent {
   loginForm: FormGroup;
+  loginFailed = false;
+  loading = false;
+  darkMode = false;
 
   constructor(
     private formBuilder: FormBuilder,
-    private authService: AuthService, // Assuming you have a LoginService to handle authentication
-    private router: Router // Assuming you have a Router to navigate after login
+    private authService: AuthService,
+    private router: Router
   ) {
     this.loginForm = this.formBuilder.group({
-      userName: [' ', [Validators.required, Validators.minLength(4)]],
-      password: [' ', [Validators.required]]
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required]]
     });
   }
+
   login() {
     if (this.loginForm.valid) {
-      const loginDto: loginDto = this.loginForm.value;
-      console.log(loginDto);
+      this.loading = true;
+      const loginDto = this.loginForm.value;
 
       this.authService.login(loginDto).subscribe({
-        next: (token: string) => {
-          localStorage.setItem('token', token);
-          this.router.navigate(['/platform/products'])
+        next: (result: { token: string }) => {
+          localStorage.setItem('token', result.token);
+          this.loginFailed = false;
+          this.loading = false;
+          this.router.navigate(['/platform/products']);
         },
-        error: (err: string) => {
-          console.log('Login failed', err);
+        error: () => {
+          this.loginFailed = true;
+          this.loading = false;
         }
       });
     }
+  }
+
+  loginWithGoogle() {
+    // TODO: implementeer social login via Google
+    alert('Login met Google nog niet geïmplementeerd');
+  }
+
+  loginWithFacebook() {
+    // TODO: implementeer social login via Facebook
+    alert('Login met Facebook nog niet geïmplementeerd');
+  }
+
+  toggleDarkMode() {
+    this.darkMode = !this.darkMode;
   }
 }

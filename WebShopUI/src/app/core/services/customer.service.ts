@@ -12,26 +12,26 @@ import { UpdateCustomerModel } from '../datacontracts/UpdateCustomerModel';
   providedIn: 'root',
 })
 export class CustomerService{
-  private url = 'http://localhost:5103';
+  private url = 'http://localhost:5103/api/customer';
   constructor(private http: HttpClient) { }
 
 public getAll(): Observable<CustomerViewModel[]> {
-    return this.http.get<CustomerViewModel[]>(`${this.url}/client`);
+    return this.http.get<CustomerViewModel[]>(`${this.url}`);
   }
 
   public getById(id: number): Observable<CustomerViewModel> {
-    return this.http.get<CustomerViewModel>(`${this.url}/client/${id}`);
+    return this.http.get<CustomerViewModel>(`${this.url}/${id}`);
   }
 
   public create(customerToCreate: CreateCustomerModel): Observable<CustomerViewModel> {
-    return this.http.post<CustomerViewModel>(`${this.url}/client`, customerToCreate);
+    return this.http.post<CustomerViewModel>(this.url, customerToCreate);
   }
 
   public update(customerToUpdate: UpdateCustomerModel): Observable<CustomerViewModel> {
-    return this.http.put<CustomerViewModel>(`${this.url}/client`, customerToUpdate);
+    return this.http.put<CustomerViewModel>(this.url, customerToUpdate);
   }
 
   public delete(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.url}/client/${id}`);
+    return this.http.delete<void>(`${this.url}/${id}`);
   }
 }

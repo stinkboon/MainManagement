@@ -1,11 +1,12 @@
 export interface CustomerViewModel {
     id: number;
-FirstName: string;
-    LastName: string;
-    Email: string;
-    PhoneNumber: string;
-    Address: string;
-    City: string;
-    State: string;
-    ZipCode: string;
-}
+    firstName: string;
+    lastName: string;
+    email: string;
+    phoneNumber: string;
+    address: string;
+    city: string;
+    state: string;
+    zip: string;
+  }
+  

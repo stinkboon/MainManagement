@@ -13,7 +13,7 @@ import { CustomerViewModel } from '../../../core/datacontracts/CustomerViewModel
   styleUrl: './client-view.component.scss'
 })
 export class CustomerViewComponent {
-  public customer?: CustomerViewModel; // Assuming CustomerViewModel is defined in your models
+  public customer?: CustomerViewModel; 
 
   constructor(
     private route: ActivatedRoute,

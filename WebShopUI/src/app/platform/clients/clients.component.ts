@@ -23,7 +23,6 @@ import { CustomerService } from '../../core/services/customer.service';
   styleUrls: ['./clients.component.scss']
 })
 export class CustomerComponent implements OnInit {
-  public products: CustomerViewModel[] = [];
   public customers: CustomerViewModel[] = [];
 
   constructor(

@@ -26,4 +26,29 @@ public class UserService : IUserService
         }
         return null;
     }
+
+    public User Register(string email, string password)
+    {
+        var existing = _repository.GetByEmail(email);
+        if (existing != null)
+        {
+            throw new Exception("Gebruiker bestaat al");
+        }
+
+        var newUser = new User
+        {
+            Email = email,
+            Password = password,
+            CreatedDate = DateTime.UtcNow,
+            LastLoginDate = DateTime.UtcNow
+        };
+
+        return _repository.CreateUser(newUser);
+    }
+
+    
+    public User? GetByEmail(string email)
+    {
+        return _repository.GetByEmail(email);
+    }
 }

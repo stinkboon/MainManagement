@@ -12,36 +12,55 @@ import { ProductUpdateComponent } from './platform/products/product-update/produ
 
 // Clients
 import { CustomerComponent } from './platform/clients/clients.component';
-import CustomerCreateComponent from './platform/clients/client-create/client-create.component';
+import { CustomerCreateComponent } from './platform/clients/client-create/client-create.component';
 import { CustomerUpdateComponent } from './platform/clients/client-update/client-update.component';
 import { CustomerViewComponent } from './platform/clients/client-view/client-view.component';
+import { AuthGuard } from './core/services/authGuard';
+import { PlatformComponent } from './platform/platform.component';
+import { AuthLayoutComponent } from './authentication/auth-layout/auth.layout.component';
 
 export const routes: Routes = [
-  { path: 'login', component: LoginComponent },
 
-  { path: 'platform/dashboard', component: DashboardComponent },
+  {
+    path: '',
+    component: AuthLayoutComponent,
+    children: [
+      { path: '', redirectTo: 'login', pathMatch: 'full' },
+      { path: 'login', loadComponent: () => import('./authentication/login/login.component').then(m => m.LoginComponent) },
+      { path: 'register', loadComponent: () => import('./authentication/register/register.component').then(m => m.RegisterComponent) },
+      { path: 'forgot-password', loadComponent: () => import('./authentication/forgot-password/forgot-password.component').then(m => m.ForgotPasswordComponent) },
+    ]
+  },
+  
+
+  {path: 'platform',
+    component: PlatformComponent,
+    canActivate: [AuthGuard],
+    children: [
+
+      { path: 'dashboard', component: DashboardComponent },
+
+      // products
+      {path: 'products', 
+        children: [
+        { path: '', component: ProductComponent },
+        { path: 'create', component: ProductCreateComponent },
+        { path: 'edit/:id', component: ProductUpdateComponent },
+        { path: ':id', component: ProductViewComponent }]
+      },
+
+      // Clients
+      {path: 'clients',
+      children : [
+        { path: '', component: CustomerComponent },
+        { path: 'create', component: CustomerCreateComponent },
+        { path: 'edit/:id', component: CustomerUpdateComponent },
+        { path: ':id', component: CustomerViewComponent }]
+      }
+  ]
+  },
 
   { path: 'platform/category', component: CategoryComponent },
 
-  {
-    path: 'platform/products',
-    children: [
-      { path: '', component: ProductComponent },
-      { path: 'create', component: ProductCreateComponent },
-      { path: 'edit/:id', component: ProductUpdateComponent },
-      { path: ':id', component: ProductViewComponent }
-    ]
-  },
-
-  {
-    path: 'platform/clients',
-    children: [
-      { path: '', component: CustomerComponent },
-      { path: 'create', component: CustomerCreateComponent },
-      { path: 'edit/:id', component: CustomerUpdateComponent },
-      { path: ':id', component: CustomerViewComponent }
-    ]
-  },
-
-  { path: '**', redirectTo: 'platform/dashboard' }
+  { path: '**', redirectTo: '/login' }
 ];

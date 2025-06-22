@@ -1,9 +1,6 @@
 namespace Webshop.DataContracts;
 
-
-public class LoginDto
+public class ForgotPasswordDto
 {
     public required string Email { get; set; }
-    public required string Password { get; set; }
-    
 }

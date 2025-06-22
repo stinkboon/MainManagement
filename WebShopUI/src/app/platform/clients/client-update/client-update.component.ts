@@ -43,15 +43,15 @@ export class CustomerUpdateComponent {
 
         this.customerService.getById(numericId).subscribe(customer => {
           this.customerForm = this.fb.group({
-            firstName: ['', Validators.required],
-            lastName: ['', Validators.required],
-            email: ['', [Validators.required, Validators.email]],
-            phone: ['', Validators.required],
-            address: ['', Validators.required],
-            city: ['', Validators.required],
-            state: ['', Validators.required],
-            zip: ['', Validators.required],
-          });
+            firstName: [customer.firstName, Validators.required],
+            lastName: [customer.lastName, Validators.required],
+            email: [customer.email, [Validators.required, Validators.email]],
+            phoneNumber: [customer.phoneNumber, Validators.required],
+            address: [customer.address, Validators.required],
+            city: [customer.city, Validators.required],
+            state: [customer.state, Validators.required],
+            zip: [customer.zip, Validators.required],
+          });           
         });
       }
     });
