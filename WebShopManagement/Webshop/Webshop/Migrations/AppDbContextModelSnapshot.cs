@@ -58,11 +58,16 @@ namespace Webshop.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer");
+
                     b.Property<string>("Zip")
                         .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Customers");
                 });
@@ -79,8 +84,8 @@ namespace Webshop.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int?>("DiscountPercentage")
-                        .HasColumnType("integer");
+                    b.Property<decimal?>("DiscountPercentage")
+                        .HasColumnType("numeric");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -92,7 +97,12 @@ namespace Webshop.Migrations
                     b.Property<int>("Stock")
                         .HasColumnType("integer");
 
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Products");
                 });
@@ -125,6 +135,35 @@ namespace Webshop.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("Webshop.Models.Customer", b =>
+                {
+                    b.HasOne("Webshop.Models.User", "User")
+                        .WithMany("Customers")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Webshop.Models.Product", b =>
+                {
+                    b.HasOne("Webshop.Models.User", "User")
+                        .WithMany("Products")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Webshop.Models.User", b =>
+                {
+                    b.Navigation("Customers");
+
+                    b.Navigation("Products");
                 });
 #pragma warning restore 612, 618
         }

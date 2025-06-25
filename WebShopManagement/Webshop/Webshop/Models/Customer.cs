@@ -13,4 +13,8 @@ public class Customer
     public required string State { get; set; }
         
     public required string Zip { get; set; }
+    
+    public int UserId { get; set; }
+    
+    public User User { get; set; }
 }

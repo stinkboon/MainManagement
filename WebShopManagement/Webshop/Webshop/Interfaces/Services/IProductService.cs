@@ -4,7 +4,7 @@ namespace Webshop.Interfaces.Services;
 
 public interface IProductService
 {
-    Product[] GetAll();
+    Task<Product[]> GetAllAsync();
 
     Product GetProductById(int id);
 

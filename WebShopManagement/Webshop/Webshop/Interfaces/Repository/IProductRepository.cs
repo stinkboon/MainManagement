@@ -4,7 +4,7 @@ namespace Webshop.Interfaces.Repository;
 
 public interface IProductRepository
 {
-    Product[] GetAll();
+    Task<Product[]> GetAllAsync();
     Product GetById(int id);
     Product CreateProduct(Product product);
 

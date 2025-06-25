@@ -14,9 +14,9 @@ public class ProductRepository : IProductRepository
         _context = context;
     }
 
-public Product[] GetAll()
+public async Task<Product[]> GetAllAsync()
 {
-    return _context.Products.ToArray();
+    return await _context.Products.ToArrayAsync();
 }
 
 public Product GetById(int id)
