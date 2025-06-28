@@ -4,13 +4,13 @@ namespace Webshop.Interfaces.Services;
 
 public interface ICustomerService
 {
-    Customer[] GetAll();
+    Task<Customer[]> GetAllAsync();
 
-    Customer GetCustomerById(int id);
+    Task<Customer?> GetCustomerByIdAsync(int id);
 
-    Customer Create(Customer customer);
+    Task<Customer> CreateAsync(Customer customer);
 
-    void Delete(int id);
+    Task DeleteAsync(int id);
 
-    void Update(Customer customer); 
+    Task UpdateAsync(Customer customer);
 }

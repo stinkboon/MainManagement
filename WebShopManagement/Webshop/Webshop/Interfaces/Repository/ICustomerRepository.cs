@@ -4,14 +4,13 @@ namespace Webshop.Interfaces.Repository;
 
 public interface ICustomerRepository
 {
-    Customer[] GetAll();
+    Task<Customer[]> GetAllAsync();
 
-    Customer GetById(int id);
+    Task<Customer?> GetByIdAsync(int id);
 
-     Customer CreateCustomer(Customer customer);
+    Task<Customer> CreateCustomerAsync(Customer customer);
 
-     void UpdateCustomer(Customer customer);
+    Task UpdateCustomerAsync(Customer customer);
 
-     void DeleteById(int id);
-
+    Task DeleteByIdAsync(int id);
 }

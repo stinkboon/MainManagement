@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using Webshop.Interfaces.Repository;
 using Webshop.Models;
 
@@ -11,37 +12,38 @@ namespace Webshop.Repository
         {
             _context = context;
         }
-            
-            
-        public Customer[] GetAll()
+
+        public async Task<Customer[]> GetAllAsync()
         {
-            return _context.Customers.ToArray();
+            return await _context.Customers.ToArrayAsync();
         }
 
-        public Customer GetById(int id)
+        public async Task<Customer?> GetByIdAsync(int id)
         {
-            return _context.Customers.Single(x => x.Id == id);
+            return await _context.Customers.SingleOrDefaultAsync(x => x.Id == id);
         }
 
-        public Customer CreateCustomer(Customer customer)
+        public async Task<Customer> CreateCustomerAsync(Customer customer)
         {
-            _context.Customers.Add(customer);
-            _context.SaveChanges();
+            await _context.Customers.AddAsync(customer);
+            await _context.SaveChangesAsync();
             return customer;
         }
 
-        public void UpdateCustomer(Customer customer)
+        public async Task UpdateCustomerAsync(Customer customer)
         {
             _context.Customers.Update(customer);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
 
-        public void DeleteById(int id)
+        public async Task DeleteByIdAsync(int id)
         {
-            var customerToBeDeleted = GetById(id);
-            _context.Customers.Remove(customerToBeDeleted);
-            _context.SaveChanges();
+            var customerToBeDeleted = await GetByIdAsync(id);
+            if (customerToBeDeleted != null)
+            {
+                _context.Customers.Remove(customerToBeDeleted);
+                await _context.SaveChangesAsync();
+            }
         }
     }
-
 }

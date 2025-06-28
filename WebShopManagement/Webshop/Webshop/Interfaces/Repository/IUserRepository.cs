@@ -8,5 +8,8 @@ public interface IUserRepository
         User? GetById(int id);
         User CreateUser(User user);
         void UpdateUser(User user);
-        void DeleteById(int id);
+        void Delete(int id);
+        
+        User? GetByResetToken(string token);
+
 }

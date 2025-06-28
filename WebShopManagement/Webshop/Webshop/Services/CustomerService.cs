@@ -1,44 +1,44 @@
 using Webshop.Interfaces.Repository;
 using Webshop.Interfaces.Services;
 using Webshop.Models;
-using Webshop.Repository;
 
 namespace Webshop.Services;
 
 public class CustomerService : ICustomerService
 {
     private readonly ICustomerRepository _repository;
-    
+
     public CustomerService(ICustomerRepository repository)
     {
         _repository = repository;
     }
-    
 
-    public Customer[] GetAll()
+    public async Task<Customer[]> GetAllAsync()
     {
-        return _repository.GetAll();
+        return await _repository.GetAllAsync();
     }
 
-    public Customer GetCustomerById(int id)
+    public async Task<Customer?> GetCustomerByIdAsync(int id)
     {
-        return _repository.GetById(id);
+        return await _repository.GetByIdAsync(id);
     }
 
-    public Customer Create(Customer customer)
+    public async Task<Customer> CreateAsync(Customer customer)
     {
-        var createdCustomer = _repository.CreateCustomer(customer);
+        var createdCustomer = await _repository.CreateCustomerAsync(customer);
         return createdCustomer;
     }
 
-    public void Delete(int id)
+    public async Task DeleteAsync(int id)
     {
-        _repository.DeleteById(id);
+        await _repository.DeleteByIdAsync(id);
     }
 
-    public void Update(Customer customer)   
+    public async Task UpdateAsync(Customer customer)
     {
-        var dbModel = _repository.GetById(customer.Id);
+        var dbModel = await _repository.GetByIdAsync(customer.Id);
+
+        if (dbModel == null) return; // eventueel: throw new Exception("Customer not found");
 
         dbModel.FirstName = customer.FirstName;
         dbModel.LastName = customer.LastName;
@@ -48,8 +48,7 @@ public class CustomerService : ICustomerService
         dbModel.City = customer.City;
         dbModel.State = customer.State;
         dbModel.Zip = customer.Zip;
-        
 
-        _repository.UpdateCustomer(dbModel);
+        await _repository.UpdateCustomerAsync(dbModel);
     }
 }

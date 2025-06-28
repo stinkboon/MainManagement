@@ -13,4 +13,8 @@ public class User
     public ICollection<Product> Products { get; set; }
     public ICollection<Customer> Customers { get; set; }
     
+    public string? ResetToken { get; set; }
+    public DateTime? ResetTokenExpires { get; set; }
+
+    
 }

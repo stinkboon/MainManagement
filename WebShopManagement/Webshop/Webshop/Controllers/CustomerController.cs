@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using Webshop.DataContracts;
 using Webshop.Interfaces.Services;
 using Webshop.Models;
-using Webshop.Services;
 
 namespace Webshop.Controllers;
 
@@ -18,55 +17,53 @@ public class CustomerController : ControllerBase
     {
         _customerService = customerService;
     }
+
     [HttpGet]
-    public ActionResult<CustomerViewModel[]> Get()
+    public async Task<ActionResult<CustomerViewModel[]>> GetAsync()
     {
-        var customers = _customerService.GetAll();
+        var customers = await _customerService.GetAllAsync();
         var viewModel = Mapper(customers);
 
         return viewModel;
     }
 
     [HttpGet("{id}")]
-    public ActionResult<CustomerViewModel> Get(int id)
+    public async Task<ActionResult<CustomerViewModel>> GetAsync(int id)
     {
+        var customer = await _customerService.GetCustomerByIdAsync(id);
 
-        var product = _customerService.GetCustomerById(id);
-
-        if (product != null)
+        if (customer != null)
         {
-            return Ok(product);
+            var viewModel = Mapper(customer);
+            return Ok(viewModel);
         }
 
         return NotFound();
     }
 
     [HttpPost]
-    public ActionResult<CustomerViewModel> Post([FromBody] CreateCustomerModel model)
+    public async Task<ActionResult<CustomerViewModel>> PostAsync([FromBody] CreateCustomerModel model)
     {
-
         var domainModel = Mapper(model);
-        var createdModel = _customerService.Create(domainModel);
+        var createdModel = await _customerService.CreateAsync(domainModel);
         var viewModel = Mapper(createdModel);
 
         return Ok(viewModel);
     }
 
     [HttpPut]
-    public ActionResult Update([FromBody] UpdateCustomerModel model)
+    public async Task<ActionResult> UpdateAsync([FromBody] UpdateCustomerModel model)
     {
-
         var domainModel = Mapper(model);
-        _customerService.Update(domainModel);
+        await _customerService.UpdateAsync(domainModel);
 
         return Ok();
     }
 
     [HttpDelete("{id}")]
-    public ActionResult Delete(int id)
+    public async Task<ActionResult> DeleteAsync(int id)
     {
-
-        _customerService.Delete(id);
+        await _customerService.DeleteAsync(id);
 
         return Ok();
     }

@@ -11,6 +11,7 @@ public class UserRepository : IUserRepository
     {
         _context = context;
     }
+
     public User? GetByEmail(string email)
     {
         return _context.Users.SingleOrDefault(x => x.Email == email);
@@ -34,7 +35,7 @@ public class UserRepository : IUserRepository
         _context.SaveChanges();
     }
 
-    public void DeleteById(int id)
+    public void Delete(int id)
     {
         var userToBeDeleted = GetById(id);
         if (userToBeDeleted != null)
@@ -43,4 +44,10 @@ public class UserRepository : IUserRepository
             _context.SaveChanges();
         }
     }
+    
+    public User? GetByResetToken(string token)
+    {
+        return _context.Users.FirstOrDefault(u => u.ResetToken == token);
+    }
+
 }
