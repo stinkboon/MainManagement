@@ -1,10 +1,9 @@
-    using System;
+
     using System.IdentityModel.Tokens.Jwt;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using Webshop.DataContracts;
     using Webshop.Interfaces.Services;
-    using Webshop.Models;
 
     namespace Webshop.Controllers
     {
@@ -57,17 +56,16 @@
                 }
             }
             [HttpPost("forgot-password")]
-            public IActionResult ForgotPassword([FromBody] string email)
+            public IActionResult ForgotPassword([FromBody] ForgotPasswordDto dto)
             {
                 try
                 {
-                    _userService.GeneratePasswordReset(email);
+                    _userService.GeneratePasswordReset(dto.Email);
 
-                    // Resetlink maken
-                    var user = _userService.GetByEmail(email);
+                    var user = _userService.GetByEmail(dto.Email);
                     var resetLink = $"http://localhost:4200/reset-password?token={user.ResetToken}";
 
-                    _emailService.Send(email, "Wachtwoord resetten", $"Klik op de volgende link om je wachtwoord te resetten:\n\n{resetLink}");
+                    _emailService.Send(dto.Email, "Wachtwoord resetten", $"Klik op de volgende link om je wachtwoord te resetten:\n\n{resetLink}");
 
                     return Ok(new { message = "Resetlink is verstuurd" });
                 }
@@ -76,6 +74,7 @@
                     return BadRequest(new { message = ex.Message });
                 }
             }
+
             
             [HttpPost("reset-password")]
             public IActionResult ResetPassword([FromBody] ResetPasswordDto dto)
