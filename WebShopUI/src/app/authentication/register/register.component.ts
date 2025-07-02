@@ -46,6 +46,8 @@ export class RegisterComponent {
   ) {
 
     this.registerForm = this.fb.group({
+      firstName: ['', Validators.required],
+      lastName: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       password: ['', Validators.required],
       confirmPassword: ['', Validators.required],
@@ -58,8 +60,8 @@ export class RegisterComponent {
   register() {
     if (this.registerForm.valid) {
       this.loading = true; // Set loading to true when the request starts
-      const { email, password } = this.registerForm.value;
-      this.authService.register({ email, password }).subscribe({
+      const { firstName, lastName, email, password } = this.registerForm.value;
+      this.authService.register({ firstName, lastName, email, password }).subscribe({
         next: () => {
           this.loading = false; // Set loading to false when the request completes successfully
           this.snackBar.open('Registratie gelukt!', 'OK', {

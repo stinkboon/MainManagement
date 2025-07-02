@@ -7,10 +7,10 @@ namespace Webshop.Interfaces.Services
     {
         User? Login(string email, string password);
         User? GetByEmail(string email);
-        User Register(string email, string password);
+        User Register(string firstName, string lastName, string email, string password);
         User GetCurrentUser();
 
-        JwtSecurityToken GetToken(User user); // <---- toevoegen
+        JwtSecurityToken GetToken(User user); 
         
         void GeneratePasswordReset(string email);
         void ResetPassword(string token, string newPassword);

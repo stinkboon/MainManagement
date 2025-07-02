@@ -43,7 +43,7 @@
             {
                 try
                 {
-                    var user = _userService.Register(dto.Email, dto.Password);
+                    var user = _userService.Register(dto.FirstName, dto.LastName, dto.Email, dto.Password);
                     return Ok(new
                     {
                         message = "Registratie gelukt",

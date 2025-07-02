@@ -1,13 +1,10 @@
-using System;
 using System.Security.Claims;
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
-using Microsoft.AspNetCore.Http;
 using Microsoft.IdentityModel.Tokens;
 using Webshop.Interfaces.Repository;
 using Webshop.Interfaces.Services;
 using Webshop.Models;
-using BCrypt.Net;
 
 namespace Webshop.Services
 {
@@ -35,7 +32,7 @@ namespace Webshop.Services
             return null;
         }
 
-        public User Register(string email, string password)
+        public User Register(string firstName, string lastName, string email, string password)
         {
             var existing = _repository.GetByEmail(email);
             if (existing != null)
@@ -47,6 +44,8 @@ namespace Webshop.Services
 
             var newUser = new User
             {
+                FirstName = firstName,
+                LastName = lastName,
                 Email = email,
                 Password = hashedPassword,
                 CreatedDate = DateTime.UtcNow,
@@ -65,7 +64,7 @@ namespace Webshop.Services
         {
             var contextUser = _httpContextAccessor.HttpContext?.User;
 
-            var userIdClaim = contextUser?.FindFirst(ClaimTypes.NameIdentifier);
+            var userIdClaim = contextUser?.FindFirst("id");
             if (userIdClaim == null)
             {
                 throw new UnauthorizedAccessException("User ID not found in token");
@@ -86,8 +85,8 @@ namespace Webshop.Services
         {
             var claims = new[]
             {
-                new Claim(ClaimTypes.Name, user.Email),
-                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString())
+                new Claim("email", user.Email),
+                new Claim("id", user.Id.ToString())
             };
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("ditissupersecretzestienkarakters"));
@@ -108,7 +107,7 @@ namespace Webshop.Services
             if (user == null)
                 throw new Exception("Gebruiker niet gevonden");
 
-            // Genereer token
+            
             var token = Guid.NewGuid().ToString();
             user.ResetToken = token;
             user.ResetTokenExpires = DateTime.UtcNow.AddHours(1);

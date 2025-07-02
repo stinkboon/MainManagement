@@ -20,7 +20,7 @@ namespace Webshop.Services
                 From = new MailAddress("stockmanagementdani@gmail.com"),
                 Subject = subject,
                 Body = body,
-                IsBodyHtml = false, // eventueel true als je HTML wilt gebruiken
+                IsBodyHtml = false,
             };
 
             mail.To.Add(to);
