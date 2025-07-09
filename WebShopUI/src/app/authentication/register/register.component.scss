@@ -24,6 +24,26 @@
     }
   }
   
+  .submit-button {
+    width: 100%;
+    margin-top: 1rem;
+    transition: background-color 0.3s ease;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+    color: #ffffff;
+    background-color: #128067;
+
+    &:hover:not(:disabled) {
+      background-color: #157d65;
+    }
+
+    &:disabled {
+      background-color: #cccccc;
+      cursor: not-allowed;
+    }
+  }
   .register-image-section {
     display: none;
   

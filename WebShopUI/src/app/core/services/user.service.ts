@@ -13,9 +13,13 @@ export class UserService {
         const token = localStorage.getItem('token');
         
         if (token) {
-            const user = jwtDecode(token);
-            return user as User;
-        }
+            try {
+              const user = jwtDecode<User>(token);
+              return user;
+            } catch (err) {
+              console.error('Ongeldig token', err);
+            }
+          }
 
         this.router.navigate(['/login']);
         return {} as User; // Return an empty User object if no token is found

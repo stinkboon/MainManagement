@@ -20,7 +20,10 @@ export class DashboardComponent implements OnInit {
   constructor(private userService: UserService) { }
 
   ngOnInit(): void {
-    this.user = this.userService.getUser();
-    this.tokenTimeValid = this.userService.getTokenTimeValid();
+    const user = this.userService.getUser();
+    if (user) {
+      this.user = user;
+      this.tokenTimeValid = this.userService.getTokenTimeValid();
+    }
   }
-}
+}  

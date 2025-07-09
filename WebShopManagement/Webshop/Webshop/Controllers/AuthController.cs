@@ -81,7 +81,7 @@
             {
                 try
                 {
-                    _userService.ResetPassword(dto.Token, dto.NewPassword);
+                    _userService.ResetPassword(dto.Token, dto.Password);
                     return Ok(new { message = "Wachtwoord succesvol gereset" });
                 }
                 catch (Exception ex)

@@ -18,5 +18,6 @@ public class CreateCustomerModel {
         
         public required string Zip { get; set; }
         
+        
     }
     

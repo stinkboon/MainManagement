@@ -85,6 +85,7 @@ namespace Webshop.Services
         {
             var claims = new[]
             {
+                new Claim ("firstName", user.FirstName),
                 new Claim("email", user.Email),
                 new Claim("id", user.Id.ToString())
             };
@@ -114,7 +115,7 @@ namespace Webshop.Services
 
             _repository.UpdateUser(user);
         }
-        public void ResetPassword(string token, string newPassword)
+        public void ResetPassword(string token, string password)
         {
             var user = _repository.GetByResetToken(token);
             if (user == null || user.ResetTokenExpires == null || user.ResetTokenExpires < DateTime.UtcNow)
@@ -122,7 +123,7 @@ namespace Webshop.Services
                 throw new Exception("Ongeldige of verlopen reset token");
             }
 
-            user.Password = BCrypt.Net.BCrypt.HashPassword(newPassword);
+            user.Password = BCrypt.Net.BCrypt.HashPassword(password);
             user.ResetToken = null;
             user.ResetTokenExpires = null;
 

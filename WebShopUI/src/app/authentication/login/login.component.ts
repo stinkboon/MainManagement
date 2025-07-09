@@ -30,6 +30,7 @@ import { MatIconModule } from '@angular/material/icon';
 })
 export class LoginComponent {
   loginForm: FormGroup;
+  
   loginFailed = false;
   loading = false;
   darkMode = false;

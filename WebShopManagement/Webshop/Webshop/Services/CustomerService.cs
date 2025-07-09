@@ -6,37 +6,42 @@ namespace Webshop.Services;
 
 public class CustomerService : ICustomerService
 {
-    private readonly ICustomerRepository _repository;
+    private readonly ICustomerRepository _customerRepository;
+    private readonly IUserService _userService;
 
-    public CustomerService(ICustomerRepository repository)
+    public CustomerService(ICustomerRepository customerRepository, IUserService userService)
     {
-        _repository = repository;
+        _customerRepository = customerRepository;
+        _userService = userService;
     }
 
-    public async Task<Customer[]> GetAllAsync()
+    public async Task<Customer[]> GetAsync()
     {
-        return await _repository.GetAllAsync();
+        return await _customerRepository.GetAsync();
     }
 
-    public async Task<Customer?> GetCustomerByIdAsync(int id)
+    public async Task<Customer> GetAsync(int id)
     {
-        return await _repository.GetByIdAsync(id);
+        return await _customerRepository.GetAsync(id);
     }
 
     public async Task<Customer> CreateAsync(Customer customer)
     {
-        var createdCustomer = await _repository.CreateCustomerAsync(customer);
+        var userIdFromToken = _userService.GetCurrentUser().Id;
+        customer.UserId = userIdFromToken;
+        
+        var createdCustomer = await _customerRepository.CreateAsync(customer);
         return createdCustomer;
     }
 
     public async Task DeleteAsync(int id)
     {
-        await _repository.DeleteByIdAsync(id);
+        await _customerRepository.DeleteAsync(id);
     }
 
     public async Task UpdateAsync(Customer customer)
     {
-        var dbModel = await _repository.GetByIdAsync(customer.Id);
+        var dbModel = await _customerRepository.GetAsync(customer.Id);
 
         if (dbModel == null) return; // eventueel: throw new Exception("Customer not found");
 
@@ -49,6 +54,6 @@ public class CustomerService : ICustomerService
         dbModel.State = customer.State;
         dbModel.Zip = customer.Zip;
 
-        await _repository.UpdateCustomerAsync(dbModel);
+        await _customerRepository.UpdateAsync(dbModel);
     }
 }

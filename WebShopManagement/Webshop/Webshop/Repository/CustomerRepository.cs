@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Webshop.Interfaces.Repository;
+using Webshop.Interfaces.Services;
 using Webshop.Models;
 
 namespace Webshop.Repository
@@ -7,38 +8,41 @@ namespace Webshop.Repository
     public class CustomerRepository : ICustomerRepository
     {
         private readonly AppDbContext _context;
+        private readonly IUserService _userService;
 
-        public CustomerRepository(AppDbContext context)
+        public CustomerRepository(AppDbContext context, IUserService userService)
         {
             _context = context;
+            _userService = userService;
         }
 
-        public async Task<Customer[]> GetAllAsync()
+        public async Task<Customer[]> GetAsync()
         {
-            return await _context.Customers.ToArrayAsync();
+            var userId = _userService.GetCurrentUser().Id;
+            return await _context.Customers.Where(x => x.UserId == userId).ToArrayAsync();
         }
 
-        public async Task<Customer?> GetByIdAsync(int id)
+        public async Task<Customer?> GetAsync(int id)
         {
-            return await _context.Customers.SingleOrDefaultAsync(x => x.Id == id);
+            return await _context.Customers.SingleAsync(x => x.Id == id);
         }
 
-        public async Task<Customer> CreateCustomerAsync(Customer customer)
+        public async Task<Customer> CreateAsync(Customer customer)
         {
             await _context.Customers.AddAsync(customer);
             await _context.SaveChangesAsync();
             return customer;
         }
 
-        public async Task UpdateCustomerAsync(Customer customer)
+        public async Task UpdateAsync(Customer customer)
         {
             _context.Customers.Update(customer);
             await _context.SaveChangesAsync();
         }
 
-        public async Task DeleteByIdAsync(int id)
+        public async Task DeleteAsync(int id)
         {
-            var customerToBeDeleted = await GetByIdAsync(id);
+            var customerToBeDeleted = await GetAsync(id);
             if (customerToBeDeleted != null)
             {
                 _context.Customers.Remove(customerToBeDeleted);

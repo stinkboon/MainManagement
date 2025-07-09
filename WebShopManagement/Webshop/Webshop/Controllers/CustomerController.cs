@@ -21,7 +21,7 @@ public class CustomerController : ControllerBase
     [HttpGet]
     public async Task<ActionResult<CustomerViewModel[]>> GetAsync()
     {
-        var customers = await _customerService.GetAllAsync();
+        var customers = await _customerService.GetAsync();
         var viewModel = Mapper(customers);
 
         return viewModel;
@@ -30,7 +30,7 @@ public class CustomerController : ControllerBase
     [HttpGet("{id}")]
     public async Task<ActionResult<CustomerViewModel>> GetAsync(int id)
     {
-        var customer = await _customerService.GetCustomerByIdAsync(id);
+        var customer = await _customerService.GetAsync(id);
 
         if (customer != null)
         {
@@ -99,6 +99,7 @@ public class CustomerController : ControllerBase
     {
         return new Customer()
         {
+            
             FirstName = model.FirstName,
             LastName = model.LastName,
             Email = model.Email,

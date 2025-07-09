@@ -13,7 +13,7 @@ namespace Webshop.Interfaces.Services
         JwtSecurityToken GetToken(User user); 
         
         void GeneratePasswordReset(string email);
-        void ResetPassword(string token, string newPassword);
+        void ResetPassword(string token, string password);
 
     }
 }
